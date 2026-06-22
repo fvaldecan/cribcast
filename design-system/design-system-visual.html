@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CribCast — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── TOKENS ── */
+    :root {
+      /* colors */
+      --charcoal:       #353535;
+      --charcoal-80:    #5a5a5a;
+      --charcoal-40:    #9a9a9a;
+      --charcoal-10:    #f2f2f2;
+      --teal:           #3c6e71;
+      --teal-light:     #4d8d91;
+      --teal-dark:      #2a4f52;
+      --teal-10:        #eef5f5;
+      --white:          #ffffff;
+      --silver:         #d9d9d9;
+      --silver-dark:    #b8b8b8;
+      --silver-light:   #efefef;
+      --navy:           #284b63;
+      --navy-light:     #3a6b8a;
+      --navy-dark:      #1a3245;
+      --navy-10:        #edf2f7;
+      --error:          #c0392b;
+      --error-10:       #fdf0ee;
+      --success:        #27ae60;
+      --success-10:     #edfaf3;
+      --warning:        #d4a017;
+      --warning-10:     #fdf8ec;
+      --info:           #2980b9;
+      --info-10:        #eef6fc;
+
+      /* typography */
+      --font-heading:   'Space Grotesk', sans-serif;
+      --font-body:      'Inter', sans-serif;
+      --font-mono:      'JetBrains Mono', monospace;
+
+      /* type scale */
+      --text-xs:    12px;
+      --text-sm:    14px;
+      --text-base:  16px;
+      --text-lg:    18px;
+      --text-xl:    20px;
+      --text-2xl:   24px;
+      --text-3xl:   30px;
+      --text-4xl:   36px;
+      --text-5xl:   48px;
+      --text-6xl:   60px;
+
+      /* spacing */
+      --space-1:   4px;
+      --space-2:   8px;
+      --space-3:   12px;
+      --space-4:   16px;
+      --space-5:   20px;
+      --space-6:   24px;
+      --space-8:   32px;
+      --space-10:  40px;
+      --space-12:  48px;
+      --space-16:  64px;
+      --space-20:  80px;
+
+      /* radius */
+      --radius-sm:   4px;
+      --radius-md:   8px;
+      --radius-lg:   12px;
+      --radius-xl:   16px;
+      --radius-2xl:  24px;
+      --radius-full: 9999px;
+
+      /* shadows */
+      --shadow-sm:  0 1px 2px rgba(53,53,53,.06);
+      --shadow-md:  0 4px 8px -1px rgba(53,53,53,.12), 0 2px 4px -1px rgba(53,53,53,.07);
+      --shadow-lg:  0 12px 20px -4px rgba(53,53,53,.14), 0 4px 8px -2px rgba(53,53,53,.08);
+      --shadow-xl:  0 24px 32px -6px rgba(53,53,53,.16), 0 10px 12px -4px rgba(53,53,53,.08);
+
+      /* transitions */
+      --ease: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── BASE ── */
+    body {
+      background: #f7f8f9;
+      color: var(--charcoal);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.6;
+    }
+
+    /* ── PAGE LAYOUT ── */
+    .ds-page { max-width: 1200px; margin: 0 auto; padding: var(--space-12) var(--space-8); }
+
+    .ds-header {
+      display: flex; align-items: center; gap: var(--space-4);
+      margin-bottom: var(--space-16);
+      padding-bottom: var(--space-8);
+      border-bottom: 2px solid var(--silver);
+    }
+    .ds-logo {
+      display: flex; align-items: center; gap: var(--space-2);
+      font-family: var(--font-heading); font-size: var(--text-2xl); font-weight: 700;
+      color: var(--charcoal);
+    }
+    .ds-logo-dot {
+      width: 10px; height: 10px; background: var(--teal); border-radius: var(--radius-full);
+      flex-shrink: 0;
+    }
+    .ds-tagline { color: var(--charcoal-80); font-size: var(--text-sm); }
+
+    .section {
+      margin-bottom: var(--space-16);
+    }
+    .section-title {
+      font-family: var(--font-heading); font-size: var(--text-xs); font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase; color: var(--charcoal-40);
+      margin-bottom: var(--space-6);
+      display: flex; align-items: center; gap: var(--space-3);
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--silver);
+    }
+    .section-label {
+      font-family: var(--font-mono); font-size: var(--text-xs); color: var(--teal);
+      background: var(--teal-10); padding: 2px 8px; border-radius: var(--radius-sm);
+    }
+
+    /* ── GRID HELPERS ── */
+    .row  { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: flex-start; }
+    .col  { display: flex; flex-direction: column; gap: var(--space-4); }
+    .card-bg { background: var(--white); border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-md); }
+
+    /* ──────────────────────────────────────────────
+       1. COLOR PALETTE
+    ────────────────────────────────────────────── */
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--space-4); }
+    .swatch {
+      border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .swatch-block { height: 80px; }
+    .swatch-meta { padding: var(--space-3); background: var(--white); }
+    .swatch-name  { font-family: var(--font-heading); font-weight: 600; font-size: var(--text-sm); }
+    .swatch-hex   { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--charcoal-80); margin-top: 2px; }
+    .swatch-role  { font-size: 10px; color: var(--charcoal-40); margin-top: 2px; text-transform: uppercase; letter-spacing: .06em; }
+
+    .color-sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--space-3); margin-top: var(--space-4); }
+    .swatch-sm .swatch-block { height: 48px; }
+
+    /* ──────────────────────────────────────────────
+       2. TYPOGRAPHY
+    ────────────────────────────────────────────── */
+    .type-row { display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-4) 0; border-bottom: 1px solid var(--silver-light); }
+    .type-row:last-child { border-bottom: none; }
+    .type-meta { font-family: var(--font-mono); font-size: 11px; color: var(--charcoal-40); }
+
+    /* ──────────────────────────────────────────────
+       3. BUTTONS
+    ────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+      font-family: var(--font-heading); font-weight: 600;
+      border: none; border-radius: var(--radius-md);
+      cursor: pointer; transition: all var(--ease);
+      text-decoration: none; white-space: nowrap;
+      position: relative;
+    }
+
+    /* sizes */
+    .btn-xs  { font-size: var(--text-xs);  padding: 4px 10px;  border-radius: var(--radius-sm); }
+    .btn-sm  { font-size: var(--text-sm);  padding: 7px 14px;  }
+    .btn-md  { font-size: var(--text-base); padding: 10px 20px; }
+    .btn-lg  { font-size: var(--text-lg);  padding: 13px 28px; border-radius: var(--radius-lg); }
+    .btn-xl  { font-size: var(--text-xl);  padding: 16px 36px; border-radius: var(--radius-lg); }
+
+    /* variants */
+    .btn-primary   { background: var(--teal); color: var(--white); }
+    .btn-primary:hover { background: var(--teal-light); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+    .btn-primary:active { background: var(--teal-dark); transform: translateY(0); }
+
+    .btn-secondary { background: var(--navy); color: var(--white); }
+    .btn-secondary:hover { background: var(--navy-light); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+    .btn-secondary:active { background: var(--navy-dark); transform: translateY(0); }
+
+    .btn-outline  { background: transparent; color: var(--teal); border: 2px solid var(--teal); }
+    .btn-outline:hover { background: var(--teal-10); }
+
+    .btn-ghost    { background: transparent; color: var(--charcoal-80); border: 2px solid var(--silver); }
+    .btn-ghost:hover { background: var(--charcoal-10); border-color: var(--silver-dark); }
+
+    .btn-danger   { background: var(--error); color: var(--white); }
+    .btn-danger:hover { background: #a93226; box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+    .btn-link     { background: none; color: var(--teal); font-weight: 500; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+    .btn-link:hover { color: var(--teal-dark); }
+
+    .btn-icon {
+      width: 40px; height: 40px; padding: 0; background: var(--charcoal-10);
+      color: var(--charcoal); border-radius: var(--radius-md); font-size: 18px;
+    }
+    .btn-icon:hover { background: var(--silver); }
+    .btn-icon-round { border-radius: var(--radius-full); }
+
+    .btn-disabled { opacity: .38; cursor: not-allowed; pointer-events: none; }
+    .btn-loading  { color: transparent; }
+    .btn-loading::after {
+      content: ''; position: absolute; width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,.4); border-top-color: white;
+      border-radius: 50%; animation: spin 700ms linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ──────────────────────────────────────────────
+       4. INPUTS
+    ────────────────────────────────────────────── */
+    .form-group { display: flex; flex-direction: column; gap: var(--space-2); width: 280px; }
+    .form-label { font-size: var(--text-sm); font-weight: 500; color: var(--charcoal); }
+    .form-hint  { font-size: var(--text-xs); color: var(--charcoal-40); }
+    .form-error-msg { font-size: var(--text-xs); color: var(--error); }
+
+    .input {
+      width: 100%; padding: 10px 14px;
+      font-family: var(--font-body); font-size: var(--text-base); color: var(--charcoal);
+      background: var(--white); border: 1.5px solid var(--silver);
+      border-radius: var(--radius-md); outline: none;
+      transition: all var(--ease);
+    }
+    .input::placeholder { color: var(--charcoal-40); }
+    .input:focus, .input-focused { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(60,110,113,.12); }
+    .input-error  { border-color: var(--error); box-shadow: 0 0 0 3px rgba(192,57,43,.10); }
+    .input-success { border-color: var(--success); }
+    .input-disabled { background: var(--silver-light); color: var(--charcoal-40); cursor: not-allowed; }
+
+    .input-with-icon { position: relative; }
+    .input-with-icon .input { padding-left: 40px; }
+    .input-icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--charcoal-40); font-size: 16px; pointer-events: none;
+    }
+
+    textarea.input { min-height: 100px; resize: vertical; }
+
+    .select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239a9a9a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 40px; cursor: pointer; }
+
+    /* ──────────────────────────────────────────────
+       5. CARDS
+    ────────────────────────────────────────────── */
+    /* Basic card */
+    .card {
+      background: var(--white); border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md); overflow: hidden;
+    }
+    .card-img { width: 100%; height: 180px; object-fit: cover; background: linear-gradient(135deg, var(--teal-10) 0%, var(--navy-10) 100%); display: flex; align-items: center; justify-content: center; }
+    .card-img-placeholder { font-size: 48px; opacity: .4; }
+    .card-body { padding: var(--space-5); }
+    .card-eyebrow { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; color: var(--teal); margin-bottom: var(--space-1); }
+    .card-title { font-family: var(--font-heading); font-size: var(--text-xl); font-weight: 700; color: var(--charcoal); line-height: 1.3; }
+    .card-subtitle { font-size: var(--text-sm); color: var(--charcoal-80); margin-top: 4px; }
+    .card-text { font-size: var(--text-sm); color: var(--charcoal-80); margin-top: var(--space-3); line-height: 1.6; }
+    .card-footer { padding: var(--space-4) var(--space-5); border-top: 1px solid var(--silver-light); display: flex; align-items: center; justify-content: space-between; }
+
+    /* Listing card */
+    .listing-card { width: 320px; }
+    .listing-price { font-family: var(--font-heading); font-size: var(--text-2xl); font-weight: 700; color: var(--navy); }
+    .listing-price span { font-size: var(--text-sm); font-weight: 400; color: var(--charcoal-40); }
+    .listing-stats { display: flex; gap: var(--space-4); margin-top: var(--space-3); }
+    .listing-stat { font-size: var(--text-xs); color: var(--charcoal-80); display: flex; align-items: center; gap: 4px; }
+    .listing-stat-icon { font-size: 14px; }
+    .listing-tag { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-sm); text-transform: uppercase; letter-spacing: .05em; }
+
+    /* Featured card */
+    .featured-card {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--teal-dark) 100%);
+      border-radius: var(--radius-xl); padding: var(--space-8); color: var(--white);
+      width: 360px; position: relative; overflow: hidden;
+    }
+    .featured-card::before {
+      content: ''; position: absolute; right: -30px; top: -30px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+    .featured-card::after {
+      content: ''; position: absolute; right: 20px; bottom: -40px;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: rgba(255,255,255,.04);
+    }
+
+    /* Stat card */
+    .stat-card {
+      background: var(--white); border-radius: var(--radius-xl);
+      padding: var(--space-6); box-shadow: var(--shadow-md);
+      border-left: 4px solid var(--teal);
+      width: 200px;
+    }
+
+    /* Horizontal card */
+    .horizontal-card {
+      display: flex; background: var(--white); border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md); overflow: hidden; width: 500px;
+    }
+    .horizontal-card-img {
+      width: 140px; flex-shrink: 0;
+      background: linear-gradient(160deg, var(--teal-10), var(--navy-10));
+      display: flex; align-items: center; justify-content: center; font-size: 40px;
+    }
+    .horizontal-card-body { padding: var(--space-5); flex: 1; }
+
+    /* ──────────────────────────────────────────────
+       6. BADGES & TAGS
+    ────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: var(--font-heading); font-size: var(--text-xs);
+      font-weight: 600; padding: 3px 10px; border-radius: var(--radius-full);
+      letter-spacing: .03em;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+    .badge-teal    { background: var(--teal-10); color: var(--teal-dark); }
+    .badge-navy    { background: var(--navy-10); color: var(--navy); }
+    .badge-success { background: var(--success-10); color: #1e8449; }
+    .badge-error   { background: var(--error-10); color: var(--error); }
+    .badge-warning { background: var(--warning-10); color: #b7860b; }
+    .badge-silver  { background: var(--charcoal-10); color: var(--charcoal-80); }
+    .badge-dark    { background: var(--charcoal); color: var(--white); }
+    .badge-outline-teal { background: transparent; color: var(--teal); border: 1.5px solid var(--teal); }
+
+    .tag {
+      display: inline-flex; align-items: center; gap: var(--space-1);
+      font-size: var(--text-xs); font-weight: 500;
+      padding: 4px 10px; border-radius: var(--radius-sm);
+      background: var(--charcoal-10); color: var(--charcoal-80);
+      border: 1px solid var(--silver);
+    }
+    .tag-close { cursor: pointer; color: var(--charcoal-40); font-size: 10px; }
+    .tag-close:hover { color: var(--error); }
+    .tag-teal { background: var(--teal-10); color: var(--teal); border-color: rgba(60,110,113,.2); }
+    .tag-navy { background: var(--navy-10); color: var(--navy); border-color: rgba(40,75,99,.2); }
+
+    /* ──────────────────────────────────────────────
+       7. AVATARS
+    ────────────────────────────────────────────── */
+    .avatar {
+      border-radius: var(--radius-full); overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--teal-10); color: var(--teal); font-family: var(--font-heading); font-weight: 700;
+      flex-shrink: 0;
+    }
+    .avatar-xs  { width: 24px;  height: 24px;  font-size: 10px; }
+    .avatar-sm  { width: 32px;  height: 32px;  font-size: 12px; }
+    .avatar-md  { width: 40px;  height: 40px;  font-size: 16px; }
+    .avatar-lg  { width: 56px;  height: 56px;  font-size: 20px; }
+    .avatar-xl  { width: 80px;  height: 80px;  font-size: 28px; }
+    .avatar-2xl { width: 112px; height: 112px; font-size: 40px; }
+
+    .avatar-navy   { background: var(--navy-10); color: var(--navy); }
+    .avatar-charcoal { background: var(--charcoal-10); color: var(--charcoal); }
+    .avatar-gradient { background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%); color: var(--white); }
+
+    .avatar-square { border-radius: var(--radius-lg); }
+    .avatar-sm.avatar-square { border-radius: var(--radius-sm); }
+
+    .avatar-ring { box-shadow: 0 0 0 3px var(--white), 0 0 0 5px var(--teal); }
+    .avatar-status { position: relative; display: inline-block; }
+    .avatar-status-dot {
+      position: absolute; bottom: 1px; right: 1px;
+      width: 10px; height: 10px; border-radius: 50%;
+      border: 2px solid var(--white); background: var(--success);
+    }
+    .avatar-status-dot.offline { background: var(--silver-dark); }
+    .avatar-status-dot.busy    { background: var(--error); }
+
+    .avatar-group { display: flex; }
+    .avatar-group .avatar { margin-left: -8px; border: 2px solid var(--white); }
+    .avatar-group .avatar:first-child { margin-left: 0; }
+
+    /* ──────────────────────────────────────────────
+       8. NAV BAR
+    ────────────────────────────────────────────── */
+    .navbar {
+      background: var(--white); border-bottom: 1px solid var(--silver);
+      box-shadow: var(--shadow-sm);
+      display: flex; align-items: center;
+      padding: 0 var(--space-6); height: 60px; gap: var(--space-6);
+      border-radius: var(--radius-xl);
+    }
+    .navbar-brand {
+      display: flex; align-items: center; gap: var(--space-2);
+      font-family: var(--font-heading); font-weight: 700; font-size: var(--text-lg);
+      color: var(--charcoal); text-decoration: none;
+    }
+    .navbar-brand-icon {
+      width: 32px; height: 32px; background: var(--teal);
+      border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: 16px;
+    }
+    .navbar-nav { display: flex; align-items: center; gap: 4px; flex: 1; }
+    .nav-link {
+      font-size: var(--text-sm); font-weight: 500; color: var(--charcoal-80);
+      padding: 6px 14px; border-radius: var(--radius-md); text-decoration: none;
+      transition: all var(--ease);
+    }
+    .nav-link:hover { background: var(--charcoal-10); color: var(--charcoal); }
+    .nav-link.active { background: var(--teal-10); color: var(--teal); }
+    .navbar-actions { display: flex; align-items: center; gap: var(--space-3); }
+
+    /* Dark navbar */
+    .navbar-dark {
+      background: var(--charcoal); border-color: var(--charcoal-80);
+    }
+    .navbar-dark .navbar-brand { color: var(--white); }
+    .navbar-dark .nav-link { color: rgba(255,255,255,.7); }
+    .navbar-dark .nav-link:hover { background: rgba(255,255,255,.08); color: var(--white); }
+    .navbar-dark .nav-link.active { background: rgba(60,110,113,.3); color: var(--teal-light); }
+
+    /* ──────────────────────────────────────────────
+       9. LINKS
+    ────────────────────────────────────────────── */
+    .link { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; transition: color var(--ease); }
+    .link:hover { color: var(--teal-dark); }
+    .link-navy { color: var(--navy); }
+    .link-subtle { color: var(--charcoal-80); text-decoration: none; border-bottom: 1px solid var(--silver); }
+    .link-subtle:hover { border-bottom-color: var(--charcoal); color: var(--charcoal); }
+
+    /* ──────────────────────────────────────────────
+       10. DIVIDERS
+    ────────────────────────────────────────────── */
+    .divider { height: 1px; background: var(--silver); width: 100%; }
+    .divider-thick { height: 2px; background: var(--silver); }
+    .divider-dark { background: var(--charcoal-80); }
+    .divider-teal { background: var(--teal); }
+    .divider-label {
+      display: flex; align-items: center; gap: var(--space-3);
+      font-size: var(--text-xs); color: var(--charcoal-40); font-weight: 500;
+      text-transform: uppercase; letter-spacing: .08em;
+    }
+    .divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--silver); }
+
+    /* ──────────────────────────────────────────────
+       11. RADIUS SCALE
+    ────────────────────────────────────────────── */
+    .radius-swatch {
+      width: 80px; height: 80px; background: var(--teal); opacity: .85;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-family: var(--font-mono); font-size: 11px;
+      font-weight: 500;
+    }
+
+    /* ──────────────────────────────────────────────
+       12. PROGRESS BARS
+    ────────────────────────────────────────────── */
+    .progress { width: 100%; background: var(--silver-light); border-radius: var(--radius-full); overflow: hidden; }
+    .progress-xs { height: 4px; }
+    .progress-sm { height: 8px; }
+    .progress-md { height: 12px; }
+    .progress-lg { height: 20px; }
+    .progress-bar {
+      height: 100%; border-radius: var(--radius-full);
+      background: var(--teal); transition: width .6s ease;
+    }
+    .progress-bar-navy   { background: var(--navy); }
+    .progress-bar-gradient { background: linear-gradient(90deg, var(--navy), var(--teal)); }
+    .progress-bar-success { background: var(--success); }
+    .progress-bar-warning { background: var(--warning); }
+    .progress-bar-error   { background: var(--error); }
+    .progress-labeled {
+      display: flex; align-items: center; gap: var(--space-3);
+    }
+    .progress-labeled .progress { flex: 1; }
+    .progress-label { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--charcoal-80); min-width: 36px; text-align: right; }
+    .progress-caption { font-size: var(--text-xs); color: var(--charcoal-40); margin-bottom: 4px; }
+
+    /* ──────────────────────────────────────────────
+       13. STATUS INDICATORS
+    ────────────────────────────────────────────── */
+    .status {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-size: var(--text-sm); font-weight: 500;
+    }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .status-dot-pulse {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .6; transform: scale(1.2); }
+    }
+    .status-active  .status-dot { background: var(--success); }
+    .status-pending .status-dot { background: var(--warning); }
+    .status-offline .status-dot { background: var(--silver-dark); }
+    .status-error   .status-dot { background: var(--error); }
+    .status-live .status-dot {
+      background: var(--error);
+      box-shadow: 0 0 0 4px rgba(192,57,43,.2);
+    }
+
+    /* ──────────────────────────────────────────────
+       14. TOASTS / NOTIFICATIONS
+    ────────────────────────────────────────────── */
+    .toast {
+      display: flex; align-items: flex-start; gap: var(--space-3);
+      padding: var(--space-4); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg); background: var(--white);
+      border-left: 4px solid var(--teal); width: 360px;
+      font-size: var(--text-sm);
+    }
+    .toast-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .toast-title { font-weight: 600; color: var(--charcoal); }
+    .toast-body  { color: var(--charcoal-80); margin-top: 2px; font-size: var(--text-xs); }
+    .toast-close { margin-left: auto; font-size: 18px; color: var(--charcoal-40); cursor: pointer; flex-shrink: 0; }
+    .toast-close:hover { color: var(--charcoal); }
+    .toast-success { border-color: var(--success); }
+    .toast-error   { border-color: var(--error); }
+    .toast-warning { border-color: var(--warning); }
+    .toast-dark { background: var(--charcoal); border-color: var(--teal-light); }
+    .toast-dark .toast-title { color: var(--white); }
+    .toast-dark .toast-body  { color: rgba(255,255,255,.7); }
+    .toast-dark .toast-close { color: rgba(255,255,255,.4); }
+
+    /* ──────────────────────────────────────────────
+       15. STAT COUNTERS
+    ────────────────────────────────────────────── */
+    .stat-counter { display: flex; flex-direction: column; gap: 2px; }
+    .stat-value {
+      font-family: var(--font-heading); font-size: var(--text-5xl); font-weight: 700;
+      color: var(--charcoal); line-height: 1;
+      letter-spacing: -.03em;
+    }
+    .stat-value-sm {
+      font-family: var(--font-heading); font-size: var(--text-3xl); font-weight: 700;
+      color: var(--charcoal); line-height: 1; letter-spacing: -.02em;
+    }
+    .stat-delta { font-size: var(--text-sm); font-weight: 600; }
+    .stat-delta-up   { color: var(--success); }
+    .stat-delta-down { color: var(--error); }
+    .stat-desc { font-size: var(--text-sm); color: var(--charcoal-40); margin-top: 4px; }
+    .stat-label { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--charcoal-40); font-weight: 600; }
+
+    /* ──────────────────────────────────────────────
+       16. CTA BLOCKS
+    ────────────────────────────────────────────── */
+    .cta-block {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+      border-radius: var(--radius-2xl); padding: var(--space-12) var(--space-10);
+      text-align: center; color: var(--white); position: relative; overflow: hidden;
+    }
+    .cta-block::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 20% 50%, rgba(255,255,255,.08) 0%, transparent 60%);
+    }
+    .cta-block-title { font-family: var(--font-heading); font-size: var(--text-4xl); font-weight: 700; line-height: 1.2; margin-bottom: var(--space-4); position: relative; }
+    .cta-block-sub   { font-size: var(--text-lg); opacity: .8; margin-bottom: var(--space-8); position: relative; }
+    .cta-block-btns  { display: flex; gap: var(--space-4); justify-content: center; position: relative; flex-wrap: wrap; }
+    .btn-white { background: var(--white); color: var(--navy); }
+    .btn-white:hover { background: var(--silver-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn-outline-white { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,.5); }
+    .btn-outline-white:hover { background: rgba(255,255,255,.1); border-color: white; }
+
+    /* inline CTA */
+    .cta-inline {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      gap: var(--space-6);
+      background: var(--teal-10); border: 1.5px solid rgba(60,110,113,.2);
+      border-radius: var(--radius-xl); padding: var(--space-6) var(--space-8);
+    }
+    .cta-inline-text .cta-inline-title { font-family: var(--font-heading); font-size: var(--text-xl); font-weight: 700; color: var(--charcoal); }
+    .cta-inline-text .cta-inline-sub   { font-size: var(--text-sm); color: var(--charcoal-80); margin-top: 2px; }
+
+    /* ──────────────────────────────────────────────
+       17. SCORES (CribCast-specific)
+    ────────────────────────────────────────────── */
+    .score-ring-wrap { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); }
+    .score-ring-svg { }
+    .score-ring-bg   { fill: none; stroke: var(--silver-light); }
+    .score-ring-fill { fill: none; stroke: var(--teal); stroke-linecap: round; transition: stroke-dashoffset .8s ease; }
+    .score-ring-text { font-family: var(--font-heading); font-weight: 700; fill: var(--charcoal); }
+    .score-ring-label { font-size: var(--text-xs); color: var(--charcoal-40); text-align: center; font-weight: 500; }
+
+    /* Score bar row */
+    .score-bar-row { display: flex; flex-direction: column; gap: var(--space-3); }
+    .score-bar-item { display: flex; align-items: center; gap: var(--space-3); }
+    .score-bar-name { font-size: var(--text-sm); color: var(--charcoal-80); width: 100px; flex-shrink: 0; }
+    .score-bar-track { flex: 1; height: 8px; background: var(--silver-light); border-radius: var(--radius-full); }
+    .score-bar-fill  { height: 100%; border-radius: var(--radius-full); background: var(--teal); }
+    .score-bar-val   { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--charcoal-80); width: 30px; text-align: right; }
+
+    /* Deal-breaker flag */
+    .deal-flag {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      background: var(--error-10); border: 1px solid rgba(192,57,43,.2);
+      color: var(--error); font-size: var(--text-xs); font-weight: 600;
+      padding: 4px 10px; border-radius: var(--radius-sm);
+    }
+    .deal-flag-ok {
+      background: var(--success-10); border-color: rgba(39,174,96,.2);
+      color: #1e8449;
+    }
+
+    /* Listing comparison row */
+    .comparison-row {
+      display: flex; align-items: stretch; gap: 1px;
+      background: var(--silver-light); border-radius: var(--radius-xl); overflow: hidden;
+    }
+    .comparison-col {
+      flex: 1; background: var(--white); padding: var(--space-5);
+    }
+    .comparison-col.winner { background: var(--teal-10); }
+    .comparison-rank {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+      color: var(--charcoal-40); text-transform: uppercase; letter-spacing: .1em; margin-bottom: var(--space-2);
+    }
+    .comparison-col.winner .comparison-rank { color: var(--teal); }
+    .comparison-address { font-family: var(--font-heading); font-weight: 600; font-size: var(--text-base); color: var(--charcoal); }
+    .comparison-score-big { font-family: var(--font-heading); font-size: var(--text-3xl); font-weight: 700; color: var(--teal); line-height: 1; margin-top: 4px; }
+    .comparison-col.winner .comparison-score-big { color: var(--teal-dark); }
+
+    /* ──────────────────────────────────────────────
+       SHADOW SCALE
+    ────────────────────────────────────────────── */
+    .shadow-swatch {
+      width: 120px; height: 80px; background: var(--white);
+      border-radius: var(--radius-lg); display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 4px;
+    }
+    .shadow-name { font-family: var(--font-mono); font-size: 11px; color: var(--charcoal-80); }
+
+    /* ── MISC helpers ── */
+    .gap-2 { gap: var(--space-2); }
+    .gap-3 { gap: var(--space-3); }
+    .gap-4 { gap: var(--space-4); }
+    .gap-6 { gap: var(--space-6); }
+    .gap-8 { gap: var(--space-8); }
+    .flex-wrap { flex-wrap: wrap; }
+    .label-tiny { font-family: var(--font-mono); font-size: 11px; color: var(--charcoal-40); }
+    .mt-1 { margin-top: 4px; }
+    .mt-2 { margin-top: 8px; }
+    .mt-4 { margin-top: 16px; }
+  </style>
+</head>
+<body>
+<div class="ds-page">
+
+  <!-- HEADER -->
+  <div class="ds-header">
+    <div class="ds-logo">
+      <span class="ds-logo-dot"></span>
+      CribCast
+    </div>
+    <div>
+      <div style="font-family:var(--font-heading);font-weight:600;font-size:var(--text-sm);color:var(--charcoal-80);">Design System</div>
+      <div class="ds-tagline">v1.0 · Space Grotesk · Inter · JetBrains Mono</div>
+    </div>
+  </div>
+
+
+  <!-- ─── 1. COLOR PALETTE ─── -->
+  <div class="section">
+    <div class="section-title">Color Palette <span class="section-label">tokens/color</span></div>
+
+    <div class="color-grid">
+      <div class="swatch">
+        <div class="swatch-block" style="background:#353535"></div>
+        <div class="swatch-meta">
+          <div class="swatch-name">Charcoal</div>
+          <div class="swatch-hex">#353535</div>
+          <div class="swatch-role">Primary Text · Dark BG</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-block" style="background:#3c6e71"></div>
+        <div class="swatch-meta">
+          <div class="swatch-name">Teal</div>
+          <div class="swatch-hex">#3c6e71</div>
+          <div class="swatch-role">Primary Brand · Interactive</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-block" style="background:#284b63"></div>
+        <div class="swatch-meta">
+          <div class="swatch-name">Navy</div>
+          <div class="swatch-hex">#284b63</div>
+          <div class="swatch-role">Secondary Brand · Depth</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-block" style="background:#ffffff;border:1px solid #e5e5e5"></div>
+        <div class="swatch-meta">
+          <div class="swatch-name">White</div>
+          <div class="swatch-hex">#ffffff</div>
+          <div class="swatch-role">Background · Contrast</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-block" style="background:#d9d9d9"></div>
+        <div class="swatch-meta">
+          <div class="swatch-name">Silver</div>
+          <div class="swatch-hex">#d9d9d9</div>
+          <div class="swatch-role">Borders · Dividers · Subtle</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Derived shades -->
+    <div style="margin-top:var(--space-6);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;color:var(--charcoal-40);font-weight:600;margin-bottom:var(--space-3);">Derived Tones</div>
+    <div class="color-sub-grid">
+      <div class="swatch swatch-sm"><div class="swatch-block" style="background:#4d8d91"></div><div class="swatch-meta"><div class="swatch-name" style="font-size:11px">Teal Light</div><div class="swatch-hex">#4d8d91</div></div></div>
+      <div class="swatch swatch-sm"><div class="swatch-block" style="background:#2a4f52"></div><div class="swatch-meta"><div class="swatch-name" style="font-size:11px">Teal Dark</div><div class="swatch-hex">#2a4f52</div></div></div>
+      <div class="swatch swatch-sm"><div class="swatch-block" style="background:#eef5f5"></div><div class="swatch-meta"><div class="swatch-name" style="font-size:11px">Teal 10%</div><div class="swatch-hex">#eef5f5</div></div></div>
+      <div class="swatch swatch-sm"><div class="swatch-block" style="background:#3a6b8a"></div><div class="swatch-meta"><div class="swatch-name" style="font-size:11px">Navy Light</div><div class="swatch-hex">#3a6b8a</div></div></div>
+      <div class="swatch swatch-sm"><div class="swatch-block" style="background:#1a3245"></div><div class="swatch-meta"><div class="swatch-name" style="font-size:11px">Navy Dark</div><div class="swatch-hex">#1a3245</div></div></div>
+      <div class="swatch swatch-sm"><div class="swatch-block" style="background:#edf2f7"></div><div class="swatch-meta"><div class="swatch-name" style="font-size:11px">Navy 10%</div><div class="swatch-hex">#edf2f7</div></div></div>
+      <div class="swatch swatch-sm"><div class="swatch-block" style="background:#c0392b"></div><div class="swatch-meta"><div class="swatch-name" style="font-size:11px">Error</div><div class="swatch-hex">#c0392b</div></div></div>
+      <div class="swatch swatch-sm"><div class="swatch-block" style="background:#27ae60"></div><div class="swatch-meta"><div class="swatch-name" style="font-size:11px">Success</div><div class="swatch-hex">#27ae60</div></div></div>
+      <div class="swatch swatch-sm"><div class="swatch-block" style="background:#d4a017"></div><div class="swatch-meta"><div class="swatch-name" style="font-size:11px">Warning</div><div class="swatch-hex">#d4a017</div></div></div>
+    </div>
+  </div>
+
+
+  <!-- ─── 2. TYPOGRAPHY ─── -->
+  <div class="section">
+    <div class="section-title">Typography Scale <span class="section-label">tokens/type</span></div>
+
+    <!-- Headings: Space Grotesk -->
+    <div class="card-bg" style="margin-bottom:var(--space-4)">
+      <div class="label-tiny" style="margin-bottom:var(--space-4)">Heading — Space Grotesk</div>
+      <div class="type-row">
+        <div style="font-family:var(--font-heading);font-size:60px;font-weight:700;line-height:1.1;letter-spacing:-.03em;color:var(--charcoal)">Display / 60px 700</div>
+        <div class="type-meta">Space Grotesk · 60px · weight 700 · ls -0.03em</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-heading);font-size:48px;font-weight:700;line-height:1.15;letter-spacing:-.02em;color:var(--charcoal)">Heading 1 / 48px</div>
+        <div class="type-meta">Space Grotesk · 48px · weight 700</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-heading);font-size:36px;font-weight:700;line-height:1.2;color:var(--charcoal)">Heading 2 / 36px</div>
+        <div class="type-meta">Space Grotesk · 36px · weight 700</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-heading);font-size:30px;font-weight:600;line-height:1.25;color:var(--charcoal)">Heading 3 / 30px</div>
+        <div class="type-meta">Space Grotesk · 30px · weight 600</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-heading);font-size:24px;font-weight:600;line-height:1.3;color:var(--charcoal)">Heading 4 / 24px</div>
+        <div class="type-meta">Space Grotesk · 24px · weight 600</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-heading);font-size:20px;font-weight:600;line-height:1.35;color:var(--charcoal)">Heading 5 / 20px</div>
+        <div class="type-meta">Space Grotesk · 20px · weight 600</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-heading);font-size:18px;font-weight:600;color:var(--charcoal)">Heading 6 / 18px</div>
+        <div class="type-meta">Space Grotesk · 18px · weight 600</div>
+      </div>
+    </div>
+
+    <!-- Body: Inter -->
+    <div class="card-bg" style="margin-bottom:var(--space-4)">
+      <div class="label-tiny" style="margin-bottom:var(--space-4)">Body — Inter</div>
+      <div class="type-row">
+        <div style="font-family:var(--font-body);font-size:18px;line-height:1.75;color:var(--charcoal)">Body Large — 18px / 1.75. Find your next home with confidence. CribCast makes it easy to compare rentals side by side.</div>
+        <div class="type-meta">Inter · 18px · weight 400 · lh 1.75</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-body);font-size:16px;line-height:1.65;color:var(--charcoal)">Body Base — 16px / 1.65. Define your priorities, flag your deal-breakers, and get an instant ranked score for every listing. Missing data is flagged, not assumed.</div>
+        <div class="type-meta">Inter · 16px · weight 400 · lh 1.65</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-body);font-size:14px;line-height:1.6;color:var(--charcoal-80)">Body Small — 14px / 1.6. Listings with deal-breakers are visually demoted but never hidden. Commute scores use time-windowed data. Social-life scores check per-activity proximity.</div>
+        <div class="type-meta">Inter · 14px · weight 400 · lh 1.6 · color charcoal-80</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-body);font-size:12px;line-height:1.5;color:var(--charcoal-40)">Caption — 12px. Missing data defaults to a score of 3, not 0 — flagged with a visible disclaimer.</div>
+        <div class="type-meta">Inter · 12px · weight 400 · lh 1.5 · color charcoal-40</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--charcoal)">Label — 14px 600. Monthly Rent · Commute Score · Pet Policy</div>
+        <div class="type-meta">Inter · 14px · weight 600</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-body);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--charcoal-40)">Overline — 12px 600 uppercase</div>
+        <div class="type-meta">Inter · 12px · weight 600 · uppercase · ls 0.08em</div>
+      </div>
+    </div>
+
+    <!-- Mono: JetBrains Mono -->
+    <div class="card-bg">
+      <div class="label-tiny" style="margin-bottom:var(--space-4)">Mono — JetBrains Mono</div>
+      <div class="type-row">
+        <div style="font-family:var(--font-mono);font-size:16px;color:var(--charcoal);background:var(--charcoal-10);padding:var(--space-4);border-radius:var(--radius-md)">
+          <span style="color:var(--teal)">const</span> score = <span style="color:var(--navy)">weightedAverage</span>(priorities, listing);
+        </div>
+        <div class="type-meta">JetBrains Mono · 16px · weight 400</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-mono);font-size:14px;color:var(--charcoal-80)">Score: 8.4 / 10 · Rent: $2,400/mo · Commute: 22 min</div>
+        <div class="type-meta">JetBrains Mono · 14px · data labels</div>
+      </div>
+      <div class="type-row">
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--charcoal-40)">#284b63 · 1.5rem · 600 · tokens/color</div>
+        <div class="type-meta">JetBrains Mono · 12px · meta / captions</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 3. BUTTONS ─── -->
+  <div class="section">
+    <div class="section-title">Buttons <span class="section-label">components/button</span></div>
+
+    <div class="card-bg">
+      <div class="label-tiny" style="margin-bottom:var(--space-5)">Variants</div>
+      <div class="row flex-wrap gap-3" style="margin-bottom:var(--space-6)">
+        <button class="btn btn-md btn-primary">Primary</button>
+        <button class="btn btn-md btn-secondary">Secondary</button>
+        <button class="btn btn-md btn-outline">Outline</button>
+        <button class="btn btn-md btn-ghost">Ghost</button>
+        <button class="btn btn-md btn-danger">Danger</button>
+        <button class="btn btn-md btn-link">Link Button</button>
+      </div>
+
+      <div class="label-tiny" style="margin-bottom:var(--space-5)">Sizes</div>
+      <div class="row flex-wrap gap-3" style="margin-bottom:var(--space-6);align-items:center">
+        <button class="btn btn-xs btn-primary">XSmall</button>
+        <button class="btn btn-sm btn-primary">Small</button>
+        <button class="btn btn-md btn-primary">Medium</button>
+        <button class="btn btn-lg btn-primary">Large</button>
+        <button class="btn btn-xl btn-primary">XLarge</button>
+      </div>
+
+      <div class="label-tiny" style="margin-bottom:var(--space-5)">States</div>
+      <div class="row flex-wrap gap-3" style="margin-bottom:var(--space-6)">
+        <button class="btn btn-md btn-primary">Default</button>
+        <button class="btn btn-md btn-primary" style="background:var(--teal-light);box-shadow:var(--shadow-md);transform:translateY(-1px)">Hover</button>
+        <button class="btn btn-md btn-primary" style="background:var(--teal-dark)">Active</button>
+        <button class="btn btn-md btn-primary btn-loading">Loading</button>
+        <button class="btn btn-md btn-primary btn-disabled">Disabled</button>
+      </div>
+
+      <div class="label-tiny" style="margin-bottom:var(--space-5)">Icon Buttons</div>
+      <div class="row flex-wrap gap-3" style="margin-bottom:var(--space-6);align-items:center">
+        <button class="btn btn-icon">♡</button>
+        <button class="btn btn-icon btn-icon-round" style="background:var(--teal);color:var(--white)">+</button>
+        <button class="btn btn-icon btn-icon-round" style="background:var(--navy);color:var(--white)">→</button>
+        <button class="btn btn-md btn-primary" style="gap:8px">🏠 View Listing</button>
+        <button class="btn btn-md btn-outline" style="gap:8px">📊 Compare</button>
+      </div>
+
+      <div class="label-tiny" style="margin-bottom:var(--space-5)">Full Width</div>
+      <button class="btn btn-lg btn-primary" style="width:100%;margin-bottom:var(--space-3)">Add Listing to Compare</button>
+      <button class="btn btn-lg btn-outline" style="width:100%">Import from URL</button>
+    </div>
+  </div>
+
+
+  <!-- ─── 4. INPUTS ─── -->
+  <div class="section">
+    <div class="section-title">Inputs <span class="section-label">components/input</span></div>
+
+    <div class="card-bg">
+      <div class="row flex-wrap gap-8">
+
+        <div class="form-group">
+          <label class="form-label">Listing Address</label>
+          <input class="input" type="text" value="123 Ocean View Dr, Miami FL">
+          <span class="form-hint">Enter the full street address</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Monthly Rent</label>
+          <div class="input-with-icon">
+            <span class="input-icon">$</span>
+            <input class="input" type="text" placeholder="e.g. 2400">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Focus State</label>
+          <input class="input input-focused" type="text" value="3c6e71 teal">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Error State</label>
+          <input class="input input-error" type="text" value="abc">
+          <span class="form-error-msg">Must be a number between 1 and 10</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color:var(--charcoal-40)">Disabled</label>
+          <input class="input input-disabled" type="text" value="Not editable" disabled>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Pet Policy</label>
+          <select class="input select">
+            <option>Pets allowed</option>
+            <option>No pets</option>
+            <option>Cats only</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="width:320px">
+          <label class="form-label">Notes</label>
+          <textarea class="input" placeholder="Any additional notes about this listing..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Priority Weight</label>
+          <input class="input" type="range" style="padding:6px 0;background:none;border:none;accent-color:var(--teal)">
+          <span class="form-hint">1 (low) → 10 (essential)</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 5. CARDS ─── -->
+  <div class="section">
+    <div class="section-title">Cards <span class="section-label">components/card</span></div>
+
+    <div class="row flex-wrap gap-6">
+
+      <!-- Listing card -->
+      <div class="card listing-card">
+        <div class="card-img">
+          <span class="card-img-placeholder">🏠</span>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2)">
+            <div class="card-eyebrow">Miami Beach, FL</div>
+            <span class="badge badge-success"><span class="badge-dot" style="background:var(--success)"></span>Active</span>
+          </div>
+          <div class="card-title">123 Ocean View Dr</div>
+          <div class="listing-price">$2,400<span>/mo</span></div>
+          <div class="listing-stats">
+            <div class="listing-stat"><span class="listing-stat-icon">🛏</span>2 bed</div>
+            <div class="listing-stat"><span class="listing-stat-icon">🚿</span>1 bath</div>
+            <div class="listing-stat"><span class="listing-stat-icon">📐</span>900 sqft</div>
+          </div>
+          <div class="row flex-wrap gap-2" style="margin-top:var(--space-3)">
+            <span class="tag tag-teal">Pet friendly</span>
+            <span class="tag">W/D in unit</span>
+            <span class="tag">Parking</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:var(--text-sm);color:var(--charcoal-40)">Score: <strong style="color:var(--teal)">8.4</strong> / 10</span>
+          <button class="btn btn-sm btn-primary">Compare</button>
+        </div>
+      </div>
+
+      <!-- Featured dark card -->
+      <div class="featured-card">
+        <div style="font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;font-weight:600;opacity:.6;margin-bottom:var(--space-3)">#1 Match</div>
+        <div style="font-family:var(--font-heading);font-size:var(--text-3xl);font-weight:700;line-height:1.2;margin-bottom:var(--space-2)">456 Bayshore Ave</div>
+        <div style="opacity:.7;font-size:var(--text-sm);margin-bottom:var(--space-6)">Coconut Grove, FL · 2 bed / 2 bath</div>
+        <div style="font-family:var(--font-heading);font-size:var(--text-5xl);font-weight:700;margin-bottom:var(--space-2)">9.1<span style="font-size:var(--text-xl);opacity:.6"> /10</span></div>
+        <div style="opacity:.6;font-size:var(--text-xs);margin-bottom:var(--space-6)">Overall match score</div>
+        <div style="display:flex;gap:var(--space-3);flex-wrap:wrap">
+          <span style="background:rgba(255,255,255,.1);padding:4px 10px;border-radius:var(--radius-sm);font-size:var(--text-xs);font-weight:600">🚇 22 min commute</span>
+          <span style="background:rgba(255,255,255,.1);padding:4px 10px;border-radius:var(--radius-sm);font-size:var(--text-xs);font-weight:600">✅ No deal-breakers</span>
+        </div>
+        <div style="margin-top:var(--space-6);display:flex;gap:var(--space-3)">
+          <button class="btn btn-md btn-white">View Details</button>
+          <button class="btn btn-md btn-outline-white">Edit Listing</button>
+        </div>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="col gap-3">
+        <div class="stat-card">
+          <div class="stat-label">Listings Compared</div>
+          <div style="font-family:var(--font-heading);font-size:var(--text-4xl);font-weight:700;color:var(--charcoal);line-height:1;margin-top:4px">4</div>
+          <div style="font-size:var(--text-xs);color:var(--charcoal-40);margin-top:4px">2 meet all criteria</div>
+        </div>
+        <div class="stat-card" style="border-left-color:var(--navy)">
+          <div class="stat-label">Avg. Rent</div>
+          <div style="font-family:var(--font-heading);font-size:var(--text-4xl);font-weight:700;color:var(--charcoal);line-height:1;margin-top:4px">$2.3k</div>
+          <div style="font-size:var(--text-xs);color:var(--success);margin-top:4px">▲ within budget</div>
+        </div>
+        <div class="stat-card" style="border-left-color:var(--warning)">
+          <div class="stat-label">Missing Data</div>
+          <div style="font-family:var(--font-heading);font-size:var(--text-4xl);font-weight:700;color:var(--charcoal);line-height:1;margin-top:4px">3</div>
+          <div style="font-size:var(--text-xs);color:var(--warning);margin-top:4px">fields defaulted to 3</div>
+        </div>
+      </div>
+
+      <!-- Horizontal card -->
+      <div class="horizontal-card">
+        <div class="horizontal-card-img">🏢</div>
+        <div class="horizontal-card-body">
+          <div class="card-eyebrow">Wynwood, FL</div>
+          <div class="card-title" style="font-size:var(--text-lg)">789 NW 2nd Ave</div>
+          <div style="font-size:var(--text-sm);color:var(--charcoal-80);margin-top:4px">Studio · $1,850/mo</div>
+          <div style="margin-top:var(--space-3);display:flex;gap:var(--space-2);align-items:center">
+            <span class="badge badge-error"><span class="badge-dot" style="background:var(--error)"></span>Deal-breaker</span>
+            <span style="font-size:var(--text-xs);color:var(--charcoal-40)">No pets allowed</span>
+          </div>
+          <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3)">
+            <button class="btn btn-sm btn-outline">Edit</button>
+            <button class="btn btn-sm btn-ghost">Remove</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ─── 6. BADGES & TAGS ─── -->
+  <div class="section">
+    <div class="section-title">Badges & Tags <span class="section-label">components/badge</span></div>
+
+    <div class="card-bg">
+      <div class="label-tiny" style="margin-bottom:var(--space-4)">Badges — filled</div>
+      <div class="row flex-wrap gap-3" style="margin-bottom:var(--space-6)">
+        <span class="badge badge-teal">Teal</span>
+        <span class="badge badge-navy">Navy</span>
+        <span class="badge badge-success"><span class="badge-dot" style="background:var(--success)"></span>Active</span>
+        <span class="badge badge-error"><span class="badge-dot" style="background:var(--error)"></span>Deal-breaker</span>
+        <span class="badge badge-warning">⚠ Missing data</span>
+        <span class="badge badge-silver">Archived</span>
+        <span class="badge badge-dark">Top pick</span>
+        <span class="badge badge-outline-teal">Compared</span>
+      </div>
+
+      <div class="label-tiny" style="margin-bottom:var(--space-4)">Listing lifestyle tags</div>
+      <div class="row flex-wrap gap-2" style="margin-bottom:var(--space-6)">
+        <span class="tag tag-teal">🐾 Pet friendly</span>
+        <span class="tag tag-teal">🚿 W/D in unit</span>
+        <span class="tag tag-teal">🚗 Parking</span>
+        <span class="tag tag-navy">🏋️ Gym</span>
+        <span class="tag tag-navy">🏊 Pool</span>
+        <span class="tag">📦 Storage</span>
+        <span class="tag">📡 Fiber internet</span>
+        <span class="tag">🌿 Garden</span>
+        <span class="tag" style="background:var(--error-10);color:var(--error);border-color:rgba(192,57,43,.2)">✕ <span class="tag-close">No pets</span></span>
+      </div>
+
+      <div class="label-tiny" style="margin-bottom:var(--space-4)">Tags — removable</div>
+      <div class="row flex-wrap gap-2">
+        <span class="tag">Miami Beach <span class="tag-close">✕</span></span>
+        <span class="tag">$2,000–$2,800 <span class="tag-close">✕</span></span>
+        <span class="tag">2+ bed <span class="tag-close">✕</span></span>
+        <span class="tag">Pets allowed <span class="tag-close">✕</span></span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 7. AVATARS ─── -->
+  <div class="section">
+    <div class="section-title">Avatars <span class="section-label">components/avatar</span></div>
+
+    <div class="card-bg">
+      <div class="label-tiny" style="margin-bottom:var(--space-5)">Sizes</div>
+      <div class="row flex-wrap gap-6" style="align-items:flex-end;margin-bottom:var(--space-8)">
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="avatar avatar-2xl avatar-gradient">NC</div>
+          <div class="label-tiny">2xl · 112px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="avatar avatar-xl avatar-gradient">NC</div>
+          <div class="label-tiny">xl · 80px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="avatar avatar-lg">NC</div>
+          <div class="label-tiny">lg · 56px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="avatar avatar-md avatar-navy">NC</div>
+          <div class="label-tiny">md · 40px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="avatar avatar-sm">NC</div>
+          <div class="label-tiny">sm · 32px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="avatar avatar-xs avatar-charcoal">N</div>
+          <div class="label-tiny">xs · 24px</div>
+        </div>
+      </div>
+
+      <div class="label-tiny" style="margin-bottom:var(--space-5)">Variants</div>
+      <div class="row flex-wrap gap-6" style="align-items:center;margin-bottom:var(--space-8)">
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="avatar avatar-lg avatar-gradient">NC</div>
+          <div class="label-tiny">Gradient</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="avatar avatar-lg avatar-navy">NC</div>
+          <div class="label-tiny">Navy</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="avatar avatar-lg avatar-ring">NC</div>
+          <div class="label-tiny">Teal Ring</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="avatar avatar-lg avatar-square">NC</div>
+          <div class="label-tiny">Rounded Square</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <span class="avatar-status">
+            <div class="avatar avatar-lg">NC</div>
+            <span class="avatar-status-dot"></span>
+          </span>
+          <div class="label-tiny">Online</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <span class="avatar-status">
+            <div class="avatar avatar-lg avatar-charcoal">RJ</div>
+            <span class="avatar-status-dot busy"></span>
+          </span>
+          <div class="label-tiny">Busy</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <span class="avatar-status">
+            <div class="avatar avatar-lg avatar-navy">MK</div>
+            <span class="avatar-status-dot offline"></span>
+          </span>
+          <div class="label-tiny">Offline</div>
+        </div>
+      </div>
+
+      <div class="label-tiny" style="margin-bottom:var(--space-4)">Avatar Group</div>
+      <div class="avatar-group">
+        <div class="avatar avatar-md avatar-gradient">NC</div>
+        <div class="avatar avatar-md avatar-navy">RJ</div>
+        <div class="avatar avatar-md">MK</div>
+        <div class="avatar avatar-md avatar-charcoal">AL</div>
+        <div class="avatar avatar-md" style="background:var(--silver);color:var(--charcoal-80);font-size:12px">+3</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 8. NAV BAR ─── -->
+  <div class="section">
+    <div class="section-title">Navigation <span class="section-label">components/navbar</span></div>
+
+    <div class="col gap-4">
+      <!-- Light navbar -->
+      <div>
+        <div class="label-tiny" style="margin-bottom:var(--space-3)">Light</div>
+        <div class="navbar">
+          <a class="navbar-brand" href="#">
+            <div class="navbar-brand-icon">⊞</div>
+            CribCast
+          </a>
+          <nav class="navbar-nav">
+            <a class="nav-link active" href="#">Listings</a>
+            <a class="nav-link" href="#">Compare</a>
+            <a class="nav-link" href="#">Priorities</a>
+            <a class="nav-link" href="#">Settings</a>
+          </nav>
+          <div class="navbar-actions">
+            <button class="btn btn-sm btn-outline">Import</button>
+            <span class="avatar-status">
+              <div class="avatar avatar-sm avatar-gradient">NC</div>
+              <span class="avatar-status-dot"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dark navbar -->
+      <div>
+        <div class="label-tiny" style="margin-bottom:var(--space-3)">Dark</div>
+        <div class="navbar navbar-dark">
+          <a class="navbar-brand" href="#">
+            <div class="navbar-brand-icon" style="background:var(--teal)">⊞</div>
+            CribCast
+          </a>
+          <nav class="navbar-nav">
+            <a class="nav-link active" href="#">Listings</a>
+            <a class="nav-link" href="#">Compare</a>
+            <a class="nav-link" href="#">Priorities</a>
+            <a class="nav-link" href="#">Settings</a>
+          </nav>
+          <div class="navbar-actions">
+            <button class="btn btn-sm btn-outline" style="border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.8)">Import</button>
+            <div class="avatar avatar-sm avatar-gradient">NC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 9. LINKS & DIVIDERS ─── -->
+  <div class="section">
+    <div class="section-title">Links & Dividers <span class="section-label">tokens/typography</span></div>
+
+    <div class="card-bg">
+      <div class="row flex-wrap gap-8">
+        <div class="col gap-4">
+          <div class="label-tiny">Links</div>
+          <p>View the <a class="link" href="#">full listing details</a> on this property.</p>
+          <p>Back to <a class="link link-navy" href="#">all listings</a></p>
+          <p>Check our <a class="link-subtle" href="#">FAQ</a> for common questions.</p>
+          <p style="font-size:var(--text-sm);color:var(--charcoal-40)">Score methodology: <a class="link" href="#" style="font-size:var(--text-sm)">how we calculate it</a></p>
+        </div>
+        <div class="col gap-4" style="flex:1;min-width:300px">
+          <div class="label-tiny">Dividers</div>
+          <div class="divider"></div>
+          <div class="divider-label">or</div>
+          <div class="divider-teal" style="width:40px;height:3px;border-radius:2px"></div>
+          <div class="divider-thick"></div>
+          <div style="height:1px;background:linear-gradient(90deg,transparent,var(--silver),transparent)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 10. BORDER RADIUS ─── -->
+  <div class="section">
+    <div class="section-title">Border Radius <span class="section-label">tokens/radius</span></div>
+
+    <div class="card-bg">
+      <div class="row flex-wrap gap-6" style="align-items:center">
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="radius-swatch" style="border-radius:0">none</div>
+          <div class="label-tiny">0</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="radius-swatch" style="border-radius:4px">sm</div>
+          <div class="label-tiny">4px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="radius-swatch" style="border-radius:8px">md</div>
+          <div class="label-tiny">8px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="radius-swatch" style="border-radius:12px">lg</div>
+          <div class="label-tiny">12px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="radius-swatch" style="border-radius:16px">xl</div>
+          <div class="label-tiny">16px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="radius-swatch" style="border-radius:24px">2xl</div>
+          <div class="label-tiny">24px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:6px">
+          <div class="radius-swatch" style="border-radius:9999px;width:80px;height:40px">full</div>
+          <div class="label-tiny">9999px</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 11. SHADOWS ─── -->
+  <div class="section">
+    <div class="section-title">Shadows <span class="section-label">tokens/shadow</span></div>
+    <div class="card-bg">
+      <div class="row flex-wrap gap-8" style="align-items:center">
+        <div class="col" style="align-items:center;gap:var(--space-3)">
+          <div class="shadow-swatch" style="box-shadow:none;background:var(--charcoal-10)"><div class="shadow-name">none</div></div>
+          <div class="label-tiny">no shadow</div>
+        </div>
+        <div class="col" style="align-items:center;gap:var(--space-3)">
+          <div class="shadow-swatch" style="box-shadow:var(--shadow-sm)"><div class="shadow-name">sm</div></div>
+          <div class="label-tiny">0 1px 2px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:var(--space-3)">
+          <div class="shadow-swatch" style="box-shadow:var(--shadow-md)"><div class="shadow-name">md</div></div>
+          <div class="label-tiny">0 4px 8px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:var(--space-3)">
+          <div class="shadow-swatch" style="box-shadow:var(--shadow-lg)"><div class="shadow-name">lg</div></div>
+          <div class="label-tiny">0 12px 20px</div>
+        </div>
+        <div class="col" style="align-items:center;gap:var(--space-3)">
+          <div class="shadow-swatch" style="box-shadow:var(--shadow-xl)"><div class="shadow-name">xl</div></div>
+          <div class="label-tiny">0 24px 32px</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 12. PROGRESS BARS ─── -->
+  <div class="section">
+    <div class="section-title">Progress Bars <span class="section-label">components/progress</span></div>
+    <div class="card-bg">
+      <div class="col gap-5">
+
+        <div>
+          <div class="progress-caption">Sizes</div>
+          <div class="col gap-3">
+            <div class="progress progress-xs"><div class="progress-bar" style="width:72%"></div></div>
+            <div class="progress progress-sm"><div class="progress-bar" style="width:72%"></div></div>
+            <div class="progress progress-md"><div class="progress-bar" style="width:72%"></div></div>
+            <div class="progress progress-lg"><div class="progress-bar progress-bar-gradient" style="width:72%"></div></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="progress-caption">Variants (labeled)</div>
+          <div class="col gap-3">
+            <div class="progress-labeled">
+              <div style="font-size:var(--text-xs);color:var(--charcoal-80);width:120px">Overall Score</div>
+              <div class="progress progress-sm"><div class="progress-bar" style="width:84%"></div></div>
+              <div class="progress-label">8.4</div>
+            </div>
+            <div class="progress-labeled">
+              <div style="font-size:var(--text-xs);color:var(--charcoal-80);width:120px">Budget Fit</div>
+              <div class="progress progress-sm"><div class="progress-bar progress-bar-success" style="width:90%"></div></div>
+              <div class="progress-label">9.0</div>
+            </div>
+            <div class="progress-labeled">
+              <div style="font-size:var(--text-xs);color:var(--charcoal-80);width:120px">Commute</div>
+              <div class="progress progress-sm"><div class="progress-bar progress-bar-navy" style="width:70%"></div></div>
+              <div class="progress-label">7.0</div>
+            </div>
+            <div class="progress-labeled">
+              <div style="font-size:var(--text-xs);color:var(--charcoal-80);width:120px">Space</div>
+              <div class="progress progress-sm"><div class="progress-bar progress-bar-warning" style="width:50%"></div></div>
+              <div class="progress-label">5.0</div>
+            </div>
+            <div class="progress-labeled">
+              <div style="font-size:var(--text-xs);color:var(--charcoal-80);width:120px">Pet Policy</div>
+              <div class="progress progress-sm"><div class="progress-bar progress-bar-error" style="width:20%"></div></div>
+              <div class="progress-label">2.0</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 13. STATUS INDICATORS ─── -->
+  <div class="section">
+    <div class="section-title">Status Indicators <span class="section-label">components/status</span></div>
+    <div class="card-bg">
+      <div class="row flex-wrap gap-8">
+        <div class="col gap-4">
+          <div class="label-tiny">States</div>
+          <div class="status status-active">
+            <span class="status-dot status-dot-pulse"></span> Active listing
+          </div>
+          <div class="status status-pending">
+            <span class="status-dot status-dot-pulse"></span> Awaiting data
+          </div>
+          <div class="status status-offline">
+            <span class="status-dot"></span> Archived
+          </div>
+          <div class="status status-error">
+            <span class="status-dot"></span> Deal-breaker violated
+          </div>
+          <div class="status status-live">
+            <span class="status-dot status-dot-pulse"></span>
+            <span style="color:var(--error);font-weight:700">LIVE</span>
+          </div>
+        </div>
+        <div class="col gap-4">
+          <div class="label-tiny">Deal-breaker flags</div>
+          <span class="deal-flag">✕ No pets allowed</span>
+          <span class="deal-flag">✕ Over budget ($2,900)</span>
+          <span class="deal-flag-ok deal-flag">✓ Pets allowed</span>
+          <span class="deal-flag-ok deal-flag">✓ In budget</span>
+          <span class="deal-flag-ok deal-flag">✓ W/D in unit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 14. TOASTS ─── -->
+  <div class="section">
+    <div class="section-title">Toasts & Alerts <span class="section-label">components/toast</span></div>
+    <div class="card-bg">
+      <div class="col gap-4">
+        <div class="toast">
+          <span class="toast-icon" style="color:var(--teal)">ℹ</span>
+          <div>
+            <div class="toast-title">Listing added</div>
+            <div class="toast-body">123 Ocean View Dr has been added to your comparison.</div>
+          </div>
+          <span class="toast-close">✕</span>
+        </div>
+        <div class="toast toast-success">
+          <span class="toast-icon" style="color:var(--success)">✓</span>
+          <div>
+            <div class="toast-title">Priorities saved</div>
+            <div class="toast-body">Your priority weights have been updated. Scores recalculated.</div>
+          </div>
+          <span class="toast-close">✕</span>
+        </div>
+        <div class="toast toast-warning">
+          <span class="toast-icon" style="color:var(--warning)">⚠</span>
+          <div>
+            <div class="toast-title">Missing data detected</div>
+            <div class="toast-body">3 fields are missing and defaulted to a score of 3. <a class="link" href="#" style="font-size:inherit">Review now</a></div>
+          </div>
+          <span class="toast-close">✕</span>
+        </div>
+        <div class="toast toast-error">
+          <span class="toast-icon" style="color:var(--error)">✕</span>
+          <div>
+            <div class="toast-title">Deal-breaker flagged</div>
+            <div class="toast-body">456 Bayshore Ave violates your "Pets allowed" rule. Listing demoted.</div>
+          </div>
+          <span class="toast-close">✕</span>
+        </div>
+        <div class="toast toast-dark">
+          <span class="toast-icon" style="color:var(--teal-light)">★</span>
+          <div>
+            <div class="toast-title">AI research complete</div>
+            <div class="toast-body">CribCast found commute and neighborhood data for 3 listings.</div>
+          </div>
+          <span class="toast-close">✕</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 15. STAT COUNTERS ─── -->
+  <div class="section">
+    <div class="section-title">Stat Counters <span class="section-label">components/stat</span></div>
+    <div class="card-bg">
+      <div class="row flex-wrap gap-8">
+        <div class="stat-counter">
+          <div class="stat-label">Top Score</div>
+          <div class="stat-value" style="color:var(--teal)">9.1</div>
+          <div style="display:flex;align-items:center;gap:var(--space-2);margin-top:4px">
+            <span class="stat-delta stat-delta-up">▲ 1.4</span>
+            <span class="stat-desc">vs last week</span>
+          </div>
+          <div class="stat-desc">456 Bayshore Ave</div>
+        </div>
+        <div class="stat-counter">
+          <div class="stat-label">Listings</div>
+          <div class="stat-value">4</div>
+          <div class="stat-desc">2 qualify, 2 flagged</div>
+        </div>
+        <div class="stat-counter">
+          <div class="stat-label">Avg. Commute</div>
+          <div class="stat-value-sm">26 min</div>
+          <div style="display:flex;align-items:center;gap:var(--space-2);margin-top:4px">
+            <span class="stat-delta stat-delta-down">▼ 4 min</span>
+            <span class="stat-desc">vs your max</span>
+          </div>
+        </div>
+        <div class="stat-counter">
+          <div class="stat-label">Budget Left</div>
+          <div class="stat-value-sm" style="color:var(--success)">$400</div>
+          <div class="stat-desc" style="color:var(--success)">All listings in budget</div>
+        </div>
+        <div class="stat-counter">
+          <div class="stat-label">Data Coverage</div>
+          <div class="stat-value-sm">78<span style="font-size:var(--text-xl)">%</span></div>
+          <div style="margin-top:8px">
+            <div class="progress progress-xs" style="width:120px"><div class="progress-bar" style="width:78%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── 16. CTA BLOCKS ─── -->
+  <div class="section">
+    <div class="section-title">CTA Blocks <span class="section-label">components/cta</span></div>
+    <div class="col gap-6">
+
+      <!-- Full CTA -->
+      <div class="cta-block">
+        <div class="cta-block-title">Find your perfect crib.</div>
+        <div class="cta-block-sub">Add your listings, define your priorities, and get a ranked score in seconds.</div>
+        <div class="cta-block-btns">
+          <button class="btn btn-lg btn-white">Get started</button>
+          <button class="btn btn-lg btn-outline-white">See how it works</button>
+        </div>
+      </div>
+
+      <!-- Inline CTA -->
+      <div class="cta-inline">
+        <div class="cta-inline-text">
+          <div class="cta-inline-title">Missing commute data?</div>
+          <div class="cta-inline-sub">Let CribCast research it — pulls live transit times for all your listings.</div>
+        </div>
+        <button class="btn btn-md btn-primary">Research commutes</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ─── 17. CRIBCAST-SPECIFIC COMPONENTS ─── -->
+  <div class="section">
+    <div class="section-title">CribCast Vibes Components <span class="section-label">components/domain</span></div>
+
+    <div class="col gap-6">
+
+      <!-- Score rings -->
+      <div class="card-bg">
+        <div class="label-tiny" style="margin-bottom:var(--space-5)">Score Rings</div>
+        <div class="row flex-wrap gap-8" style="align-items:flex-start">
+
+          <!-- 9.1 ring -->
+          <div class="score-ring-wrap">
+            <svg class="score-ring-svg" width="100" height="100" viewBox="0 0 100 100">
+              <circle class="score-ring-bg" cx="50" cy="50" r="42" stroke-width="8"/>
+              <circle class="score-ring-fill" cx="50" cy="50" r="42" stroke-width="8"
+                stroke-dasharray="263.9" stroke-dashoffset="23.75" transform="rotate(-90, 50, 50)"/>
+              <text x="50" y="50" class="score-ring-text" text-anchor="middle" dominant-baseline="middle" font-size="22" font-family="Space Grotesk">9.1</text>
+            </svg>
+            <div class="score-ring-label">456 Bayshore<br>#1 match</div>
+          </div>
+
+          <!-- 7.8 ring -->
+          <div class="score-ring-wrap">
+            <svg class="score-ring-svg" width="100" height="100" viewBox="0 0 100 100">
+              <circle class="score-ring-bg" cx="50" cy="50" r="42" stroke-width="8"/>
+              <circle class="score-ring-fill" cx="50" cy="50" r="42" stroke-width="8" stroke="var(--navy)"
+                stroke-dasharray="263.9" stroke-dashoffset="57.66" transform="rotate(-90, 50, 50)"/>
+              <text x="50" y="50" class="score-ring-text" text-anchor="middle" dominant-baseline="middle" font-size="22" font-family="Space Grotesk">7.8</text>
+            </svg>
+            <div class="score-ring-label">123 Ocean View<br>#2 match</div>
+          </div>
+
+          <!-- 5.2 ring - warning color -->
+          <div class="score-ring-wrap">
+            <svg class="score-ring-svg" width="100" height="100" viewBox="0 0 100 100">
+              <circle class="score-ring-bg" cx="50" cy="50" r="42" stroke-width="8"/>
+              <circle class="score-ring-fill" cx="50" cy="50" r="42" stroke-width="8" stroke="var(--warning)"
+                stroke-dasharray="263.9" stroke-dashoffset="126.67" transform="rotate(-90, 50, 50)"/>
+              <text x="50" y="50" class="score-ring-text" text-anchor="middle" dominant-baseline="middle" font-size="22" font-family="Space Grotesk">5.2</text>
+            </svg>
+            <div class="score-ring-label">789 NW 2nd<br>⚠ Missing data</div>
+          </div>
+
+          <!-- Disqualified ring -->
+          <div class="score-ring-wrap">
+            <svg class="score-ring-svg" width="100" height="100" viewBox="0 0 100 100">
+              <circle class="score-ring-bg" cx="50" cy="50" r="42" stroke-width="8"/>
+              <circle class="score-ring-fill" cx="50" cy="50" r="42" stroke-width="8" stroke="var(--error)"
+                stroke-dasharray="263.9" stroke-dashoffset="116.56" transform="rotate(-90, 50, 50)"/>
+              <text x="50" y="50" class="score-ring-text" text-anchor="middle" dominant-baseline="middle" font-size="22" font-family="Space Grotesk" fill="var(--error)">4.6</text>
+            </svg>
+            <div class="score-ring-label" style="color:var(--error)">Coral Towers<br>✕ Disqualified</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Score breakdown bars -->
+      <div class="card-bg">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-5)">
+          <div>
+            <div class="label-tiny">Score Breakdown</div>
+            <div style="font-family:var(--font-heading);font-weight:700;font-size:var(--text-xl);color:var(--charcoal);margin-top:4px">456 Bayshore Ave</div>
+          </div>
+          <div style="font-family:var(--font-heading);font-size:var(--text-4xl);font-weight:700;color:var(--teal)">9.1</div>
+        </div>
+        <div class="score-bar-row">
+          <div class="score-bar-item">
+            <div class="score-bar-name">Budget fit</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:90%"></div></div>
+            <div class="score-bar-val">9.0</div>
+          </div>
+          <div class="score-bar-item">
+            <div class="score-bar-name">Commute</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:85%;background:var(--navy)"></div></div>
+            <div class="score-bar-val">8.5</div>
+          </div>
+          <div class="score-bar-item">
+            <div class="score-bar-name">Pet policy</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:100%"></div></div>
+            <div class="score-bar-val">10</div>
+          </div>
+          <div class="score-bar-item">
+            <div class="score-bar-name">Space</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:80%"></div></div>
+            <div class="score-bar-val">8.0</div>
+          </div>
+          <div class="score-bar-item">
+            <div class="score-bar-name">Social life</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:95%;background:var(--teal-dark)"></div></div>
+            <div class="score-bar-val">9.5</div>
+          </div>
+          <div class="score-bar-item">
+            <div class="score-bar-name">Amenities</div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:70%;background:var(--charcoal-80)"></div></div>
+            <div class="score-bar-val">7.0</div>
+          </div>
+        </div>
+        <div style="margin-top:var(--space-5);display:flex;flex-wrap:wrap;gap:var(--space-2)">
+          <span class="deal-flag-ok deal-flag">✓ Pets allowed</span>
+          <span class="deal-flag-ok deal-flag">✓ In budget</span>
+          <span class="deal-flag-ok deal-flag">✓ W/D in unit</span>
+        </div>
+      </div>
+
+      <!-- Comparison table -->
+      <div class="card-bg">
+        <div class="label-tiny" style="margin-bottom:var(--space-5)">Comparison View</div>
+        <div class="comparison-row">
+          <div class="comparison-col winner">
+            <div class="comparison-rank">#1 Best Match</div>
+            <div class="comparison-address">456 Bayshore Ave</div>
+            <div class="comparison-score-big">9.1</div>
+            <div style="font-size:var(--text-xs);color:var(--teal);margin-top:2px">Coconut Grove · $2,200/mo</div>
+            <div style="margin-top:var(--space-3);display:flex;flex-wrap:wrap;gap:4px">
+              <span class="deal-flag-ok deal-flag" style="font-size:10px;padding:2px 6px">✓ All criteria met</span>
+            </div>
+          </div>
+          <div class="comparison-col">
+            <div class="comparison-rank">#2</div>
+            <div class="comparison-address">123 Ocean View Dr</div>
+            <div class="comparison-score-big" style="color:var(--charcoal)">7.8</div>
+            <div style="font-size:var(--text-xs);color:var(--charcoal-40);margin-top:2px">Miami Beach · $2,400/mo</div>
+            <div style="margin-top:var(--space-3);display:flex;flex-wrap:wrap;gap:4px">
+              <span class="badge badge-warning" style="font-size:10px">⚠ 2 missing fields</span>
+            </div>
+          </div>
+          <div class="comparison-col" style="opacity:.65">
+            <div class="comparison-rank">#3 — Disqualified</div>
+            <div class="comparison-address" style="text-decoration:line-through;color:var(--charcoal-40)">789 NW 2nd Ave</div>
+            <div class="comparison-score-big" style="color:var(--error)">4.6</div>
+            <div style="font-size:var(--text-xs);color:var(--error);margin-top:2px">Wynwood · $1,850/mo</div>
+            <div style="margin-top:var(--space-3)">
+              <span class="deal-flag" style="font-size:10px;padding:2px 6px">✕ No pets</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:var(--space-16) 0 var(--space-8);border-top:1px solid var(--silver);margin-top:var(--space-8)">
+    <div style="font-family:var(--font-heading);font-weight:700;font-size:var(--text-lg);color:var(--charcoal);margin-bottom:4px">CribCast Design System v1.0</div>
+    <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--charcoal-40)">Space Grotesk · Inter · JetBrains Mono · #353535 · #3c6e71 · #284b63 · #ffffff · #d9d9d9</div>
+  </div>
+
+</div>
+</body>
+</html>
