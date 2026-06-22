@@ -1,4 +1,4 @@
-Rental Comparison Tool — Build Spec & Prompt for Claude Code
+CribCast: Rental Comparison Tool— Build Spec & Prompt for Claude Code
 
 Instructions for Claude Code
 

@@ -1,5 +1,5 @@
 @AGENTS.md
-Rental Comparison Tool
+CribCast - Rental Comparison Tool
 
 A tool that lets a renter input multiple rental listings, define
 their own priorities and deal-breakers, and get back a ranked
